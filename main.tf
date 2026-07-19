@@ -13,7 +13,7 @@ resource "aws_launch_template" "web_server_as" {
 
 
   resource "aws_elb" "web_server_lb"{
-     name = "web-server-lb_1"
+     name = "web-server-lb1"
      security_groups = [aws_security_group.web_server.id]
      subnets = ["subnet-0e2ed13c50f5a52de", "subnet-099349364fa18aaf0"]
      listener {
@@ -27,7 +27,7 @@ resource "aws_launch_template" "web_server_as" {
     }
   }
 resource "aws_autoscaling_group" "web_server_asg" {
-    name                 = "web-server-asg_1"
+    name                 = "web-server-asg1"
     min_size             = 1
     max_size             = 3
     desired_capacity     = 2
