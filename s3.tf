@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "one" {
-  bucket = "krishna.143.flm.bucket"
+  bucket = "monolithic.project.218.flm.bucket"
 }
 
 resource "aws_s3_bucket_ownership_controls" "two" {
@@ -23,13 +23,6 @@ status = "Enabled"
 }
 }
 
-terraform {
-backend "s3" {
-region = "eu-north-1"
-bucket = "krishna.143.flm.bucket"
-key = "prod/terraform.tfstate"
-}
-}
 
 
 
