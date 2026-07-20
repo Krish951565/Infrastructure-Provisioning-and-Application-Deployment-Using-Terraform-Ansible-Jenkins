@@ -2,6 +2,11 @@
 
 An end-to-end **DevOps automation project** that provisions AWS infrastructure using **Terraform**, configures servers and deploys a monolithic application using **Ansible**, and orchestrates the entire workflow through a **Jenkins CI/CD pipeline**.
 
+
+<img width="500" height="300" alt="architecture-diagram" src="https://github.com/user-attachments/assets/c9de9a5d-1448-4bf8-81f4-7d4ed2df4b0d" />
+
+
+
 This project demonstrates core DevOps practices — **Infrastructure as Code (IaC)**, **Configuration Management (CM)**, and **Continuous Integration / Continuous Deployment (CI/CD)** — to deliver infrastructure and applications in a way that is repeatable, consistent, scalable, and reliable.
 
 ---
@@ -169,6 +174,53 @@ Before running this project, ensure you have:
 
 ---
 
+## Installation Guide
+
+These commands install Git, Jenkins, Ansible, and Terraform on an **Amazon Linux** based EC2 instance (used as the Jenkins/control server for this project).
+
+### Git & Jenkins
+
+```bash
+yum install git -y
+yum install java-21-amazon-corretto -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/rpm-stable/jenkins.repo
+yum install jenkins -y
+systemctl start jenkins
+```
+
+- `git` — installs Git for cloning the source repository.
+- `java-21-amazon-corretto` — installs the Amazon Corretto JDK (Java 21), a prerequisite for running Jenkins.
+- The `wget` command downloads the official Jenkins YUM repo definition.
+- `jenkins` — installs the Jenkins package from the newly added repo.
+- `systemctl start jenkins` — starts the Jenkins service (accessible by default on port `8080`).
+
+### Ansible
+
+```bash
+sudo dnf install ansible -y
+ansible-config init --disabled > /etc/ansible/ansible.cfg
+```
+
+- `dnf install ansible` — installs Ansible.
+- `ansible-config init --disabled` — generates a default (fully commented/disabled) `ansible.cfg` file at `/etc/ansible/ansible.cfg`, which can then be customized (e.g., to enable the `aws_ec2` inventory plugin).
+
+### Terraform
+
+```bash
+sudo yum install -y yum-utils shadow-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum install terraform
+```
+
+- `yum-utils` and `shadow-utils` — provide required utilities (`yum-config-manager`, user/group management tools) for adding the repo and installing packages securely.
+- `yum-config-manager --add-repo` — adds HashiCorp's official YUM repository for Amazon Linux.
+- `yum install terraform` — installs Terraform from the HashiCorp repo.
+
+> **Note:** Run `jenkins --version`, `ansible --version`, `terraform -version`, and `git --version` after installation to confirm each tool was installed correctly.
+
+---
+
 ## Setup & Usage
 
 1. **Clone the repository**
@@ -198,6 +250,57 @@ Before running this project, ensure you have:
 6. **Verify deployment**
    - Check the EC2 instance's public IP (from Terraform output or the AWS console).
    - Access the deployed application via the browser/port configured in the Ansible playbook.
+
+---
+
+## Conclusion
+
+This project brings together **Terraform**, **Ansible**, and **Jenkins** to build a fully automated, end-to-end DevOps pipeline on **AWS** — from infrastructure provisioning to application deployment — with a single click and zero manual intervention.
+
+By combining Infrastructure as Code with Configuration Management and CI/CD orchestration, this setup ensures that environments are **consistent, repeatable, and auditable**, while significantly reducing the time and human error involved in traditional manual deployments. It reflects real-world DevOps practices used by teams to ship infrastructure and applications reliably and at scale.
+
+Feel free to fork this repository, adapt the Terraform configuration for your own AWS environment, and extend the pipeline with additional stages such as automated testing, monitoring, or blue-green deployments.
+
+---
+
+## Screenshots
+
+### Jenkins Job
+
+<img width="940" height="241" alt="image" src="https://github.com/user-attachments/assets/0593f8e9-0ab8-49f1-83bd-a6e338d68ada" />
+
+
+### EC2 Instances
+
+<img width="940" height="233" alt="image" src="https://github.com/user-attachments/assets/3f72e55e-cc0c-43ec-906b-dbe77caa532c" />
+
+
+### S3 Bucket
+
+<img width="940" height="121" alt="image" src="https://github.com/user-attachments/assets/a8a2840e-383e-447a-bfc9-e04bf4658a8e" />
+
+<img width="940" height="296" alt="image" src="https://github.com/user-attachments/assets/bbc57413-c80c-43e4-b3d3-924615fc8742" />
+
+<img width="940" height="375" alt="image" src="https://github.com/user-attachments/assets/041dfb2b-a3f3-47b1-a7ce-b7696abc6f8f" />
+
+<img width="940" height="313" alt="image" src="https://github.com/user-attachments/assets/c720e6f2-5cc7-46b5-81c5-f30abd90ba23" />
+
+
+
+### Ansible
+
+<img width="940" height="468" alt="image" src="https://github.com/user-attachments/assets/2d2f10a2-4162-4dda-b9b7-acf2fc858730" />
+
+### Slack
+
+<img width="940" height="145" alt="image" src="https://github.com/user-attachments/assets/fe86c337-b761-4546-810d-90f29b4ec974" />
+
+
+
+### Application Overview
+
+<img width="940" height="425" alt="image" src="https://github.com/user-attachments/assets/fb1b3d68-05c4-45ac-869c-230697f88ede" />
+
 
 ---
 
